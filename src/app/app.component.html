@@ -3,3 +3,35 @@
     Welcome to {{ title }}!
   </h1>
 </div>
+<form [formGroup]="form">
+  <label>Flour (grams):</label>
+  <input type="number"
+         formControlName="flour">
+  <br>
+
+  <label>Water (%):</label>
+  <input type="number"
+         formControlName="water">
+  <br>
+
+  <label>Salt (%):</label>
+  <input type="number"
+         formControlName="salt">
+  <br>
+
+
+  <label>Yeast (%):</label>
+  <input type="number"
+         formControlName="yeast">
+  <br>
+
+
+  <button (click)="reset()">Reset</button>
+  <button type="submit" (click)="calculate()" [disabled]="!form.valid">Calculate</button>
+</form>
+
+<p>
+  <span *ngIf="form.valid && result">
+    {{ result | json }}
+  </span>
+</p>
