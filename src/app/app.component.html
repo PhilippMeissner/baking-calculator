@@ -31,27 +31,34 @@
                formControlName="flour">
       </mat-form-field>
 
-      <mat-form-field class="full-width">
-        <input matInput
-               type="number"
-               placeholder="Water (%)"
-               formControlName="water">
-      </mat-form-field>
+      <span>Water</span>
+      <mat-slider class="full-width"
+                  thumbLabel
+                  [displayWith]="formatLabel"
+                  tickInterval="1"
+                  min="0"
+                  formControlName="water"
+                  max="100">
+      </mat-slider>
 
-      <mat-form-field class="full-width">
-        <input matInput
-               type="number"
-               placeholder="Salt (%)"
-               formControlName="salt">
-      </mat-form-field>
+      <span>Salt</span>
+      <mat-slider class="full-width"
+                  thumbLabel
+                  [displayWith]="formatLabel"
+                  tickInterval="1"
+                  formControlName="salt"
+                  min="0"
+                  max="100"></mat-slider>
 
 
-      <mat-form-field class="full-width">
-        <input matInput
-               type="number"
-               placeholder="Yeast (%)"
-               formControlName="yeast">
-      </mat-form-field>
+      <span>Yeast</span>
+      <mat-slider class="full-width"
+                  thumbLabel
+                  [displayWith]="formatLabel"
+                  tickInterval="1"
+                  formControlName="yeast"
+                  min="0"
+                  max="100"></mat-slider>
 
     </form>
   </mat-card-content>
