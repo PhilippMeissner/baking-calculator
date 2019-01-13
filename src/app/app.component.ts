@@ -9,13 +9,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class AppComponent {
   result?: IResult;
   form: FormGroup;
+  readonly ingredients = ['flour', 'water', 'salt', 'yeast'];
 
-  private readonly _presetData: IResult = {
-    flour: 500,
-    water: 60,
-    salt: 1,
-    yeast: 1,
-  };
+  private readonly _presetData = IngredientCalculator.defaultValues();
 
   constructor(
     private readonly _fb: FormBuilder,
@@ -26,15 +22,25 @@ export class AppComponent {
       salt: [this._presetData.salt, [Validators.required]],
       yeast: [this._presetData.yeast, [Validators.required]],
     });
+
+    this.reset();
+  }
+
+  formatLabel(value: number | null): string {
+    if (!value) {
+      return '0%';
+    }
+
+    return `${value}%`;
   }
 
   calculate() {
-    this.result = {
-      flour: this._calcFlour(),
-      water: this._calcWater(),
-      salt: this._calcSalt(),
-      yeast: this._calcYeast(),
-    };
+    this.result = IngredientCalculator.calculate(
+      this._getValue('flour'),
+      this._getValue('water'),
+      this._getValue('salt'),
+      this._getValue('yeast'),
+    );
   }
 
   reset() {
@@ -43,32 +49,36 @@ export class AppComponent {
     this.result = undefined;
     this.form.updateValueAndValidity();
     this.form.markAsUntouched();
+    this.calculate();
   }
 
-  private _calcFlour(): number {
-    return this._getValue('flour');
-  }
-
-  private _calcWater(): number {
-    const waterPercentage = this._getValue('water');
-    const flourTotal = this._getValue('flour');
-    return (flourTotal / 100) * waterPercentage;
-  }
-
-  private _calcSalt(): number {
-    const saltPercentage = this._getValue('salt');
-    const flourTotal = this._getValue('flour');
-    return (flourTotal / 100) * saltPercentage;
-  }
-
-  private _calcYeast(): number {
-    const yeastPercentage = this._getValue('yeast');
-    const flourTotal = this._getValue('flour');
-    return (flourTotal / 100) * yeastPercentage;
-  }
 
   private _getValue(name: string) {
     return this.form.get(name).value;
+  }
+}
+
+export class IngredientCalculator {
+  static calculate(flour: number, water: number, salt: number, yeast: number): IResult {
+    return {
+      flour,
+      water: this._calcPercentage(flour, water),
+      salt: this._calcPercentage(flour, salt),
+      yeast: this._calcPercentage(flour, yeast),
+    };
+  }
+
+  static defaultValues(): IResult {
+    return {
+      flour: 500,
+      water: 60,
+      salt: 1,
+      yeast: 1,
+    };
+  }
+
+  private static _calcPercentage(base: number, part: number): number {
+    return (base / 100) * part;
   }
 }
 

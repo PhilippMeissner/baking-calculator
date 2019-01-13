@@ -73,8 +73,10 @@
     What to mix up:
   </mat-card-title>
   <mat-card-content>
-    <span *ngIf="form.valid && result">
-      {{ result | json }}
-    </span>
+    <ol>
+      <li *ngFor="let ingredient of ingredients">
+        <span>{{ingredient}}: {{result[ingredient]}}g</span>
+      </li>
+    </ol>
   </mat-card-content>
 </mat-card>
